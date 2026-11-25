@@ -1,145 +1,620 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Voting System</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Online Voting System</title>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #eaf0f8;
-            margin: 0;
-            padding: 20px;
-        }
+<style>
+* {
+    box-sizing: border-box;
+}
 
-        header {
-            background: #173b70;
-            color: white;
-            text-align: center;
-            padding: 25px;
-            border-radius: 10px;
-        }
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #fff9e6;
+    color: #333;
+}
 
-        .container {
-            max-width: 600px;
-            margin: 25px auto;
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 3px 10px #ccc;
-        }
+header {
+    background: #e5ad00;
+    color: white;
+    text-align: center;
+    padding: 30px 15px;
+}
 
-        h2 {
-            color: #173b70;
-            text-align: center;
-        }
+header h1 {
+    font-size: 30px;
+}
 
-        .candidate {
-            border: 1px solid #ddd;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 8px;
-            text-align: center;
-        }
+.container {
+    max-width: 900px;
+    margin: 25px auto;
+    padding: 25px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 3px 12px #ddd;
+}
 
-        button {
-            background: #1769aa;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-        }
+h2 {
+    color: #b8860b;
+    text-align: center;
+}
 
-        button:hover {
-            background: #0d4778;
-        }
+input {
+    width: 100%;
+    padding: 13px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+}
 
-        #results {
-            background: #edf4ff;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 20px;
-        }
+button {
+    background: #e5ad00;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-weight: bold;
+}
 
-        footer {
-            text-align: center;
-            margin-top: 25px;
-            color: #555;
-        }
-    </style>
+button:hover {
+    background: #bd8d00;
+}
+
+.main-btn {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.link {
+    color: #b8860b;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.hidden {
+    display: none;
+}
+
+.candidate-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 15px;
+}
+
+.candidate {
+    border: 1px solid #e5d9b8;
+    border-radius: 12px;
+    padding: 18px;
+    text-align: center;
+    background: #fffdf5;
+}
+
+.candidate img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #e5ad00;
+}
+
+.candidate h3 {
+    margin-bottom: 5px;
+}
+
+.position {
+    margin-top: 30px;
+}
+
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+.stat {
+    background: #fff2c2;
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.stat h3 {
+    color: #a77b00;
+}
+
+.result-item {
+    background: #fff9e6;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+}
+
+.bar {
+    background: #eee;
+    height: 15px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.bar-fill {
+    background: #e5ad00;
+    height: 100%;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #777;
+}
+
+.message {
+    text-align: center;
+    color: #a07800;
+    font-weight: bold;
+}
+</style>
 </head>
 
 <body>
 
 <header>
     <h1>ONLINE VOTING SYSTEM</h1>
-    <p>Welcome to Our Voting Platform</p>
+    <p>Secure and Simple Voting Platform</p>
 </header>
 
-<div class="container">
+<!-- LOGIN -->
+<div class="container" id="loginPage">
 
-    <h2>Select Your Candidate</h2>
+    <h2>Student Login</h2>
 
-    <div class="candidate">
-        <h3>Candidate A</h3>
-        <p>Position: President</p>
-        <button onclick="vote('A')">Vote for A</button>
+    <form id="loginForm">
+        <input id="loginUsername"
+        placeholder="Username" required>
+
+        <input id="loginPassword"
+        type="password"
+        placeholder="Password" required>
+
+        <button class="main-btn">LOG IN</button>
+    </form>
+
+    <p style="text-align:center">
+        Don't have an account?
+        <span class="link" onclick="showSignup()">Sign Up</span>
+    </p>
+
+    <p id="loginMessage" class="message"></p>
+</div>
+
+<!-- SIGN UP -->
+<div class="container hidden" id="signupPage">
+
+    <h2>Create Student Account</h2>
+
+    <form id="signupForm">
+
+        <input id="fullName"
+        placeholder="Full Name" required>
+
+        <input id="newUsername"
+        placeholder="Create Username" required>
+
+        <input id="newPassword"
+        type="password"
+        minlength="6"
+        placeholder="Create Password" required>
+
+        <input id="confirmPassword"
+        type="password"
+        placeholder="Confirm Password" required>
+
+        <button class="main-btn">CREATE ACCOUNT</button>
+    </form>
+
+    <p style="text-align:center">
+        Already registered?
+        <span class="link" onclick="showLogin()">Log In</span>
+    </p>
+
+    <p id="signupMessage" class="message"></p>
+</div>
+
+<!-- VOTING DASHBOARD -->
+<div class="container hidden" id="votingPage">
+
+    <h2>Welcome to Your Voting Dashboard</h2>
+
+    <p id="welcome"></p>
+
+    <div class="dashboard">
+
+        <div class="stat">
+            <h3 id="totalVotes">0</h3>
+            <p>Total Votes</p>
+        </div>
+
+        <div class="stat">
+            <h3>4</h3>
+            <p>Positions</p>
+        </div>
+
+        <div class="stat">
+            <h3 id="completedVotes">0/4</h3>
+            <p>Your Completed Votes</p>
+        </div>
+
     </div>
 
-    <div class="candidate">
-        <h3>Candidate B</h3>
-        <p>Position: President</p>
-        <button onclick="vote('B')">Vote for B</button>
-    </div>
+    <div id="positions"></div>
 
-    <div id="results">
-        <h2>Voting Results</h2>
-        <p>Candidate A: <span id="votesA">0</span> votes</p>
-        <p>Candidate B: <span id="votesB">0</span> votes</p>
-        <h3>Total Votes: <span id="total">0</span></h3>
-    </div>
+    <button onclick="showResults()"
+    class="main-btn">
+        VIEW RESULTS
+    </button>
 
-    <p id="message"></p>
+    <button onclick="logout()"
+    class="main-btn">
+        LOG OUT
+    </button>
+
+    <p id="voteMessage" class="message"></p>
+
+</div>
+
+<!-- RESULTS -->
+<div class="container hidden" id="resultsPage">
+
+    <h2>Voting Results Dashboard</h2>
+
+    <div id="resultsContent"></div>
+
+    <button class="main-btn"
+    onclick="showVoting()">
+        BACK TO VOTING
+    </button>
 
 </div>
 
 <footer>
-    <p>Online Voting System | School Project</p>
+    <p>© 2026 Online Voting System</p>
+    <p>School Voting Project</p>
 </footer>
 
 <script>
-    let votesA = 0;
-    let votesB = 0;
-    let hasVoted = false;
 
-    function vote(candidate) {
+// ACCOUNT STORAGE
+let users = JSON.parse(
+    localStorage.getItem("users") || "[]"
+);
 
-        if (hasVoted) {
-            document.getElementById("message").innerText =
-                "You have already voted!";
-            return;
-        }
+let currentUser = null;
 
-        if (candidate === "A") {
-            votesA++;
-        } else {
-            votesB++;
-        }
-
-        hasVoted = true;
-
-        document.getElementById("votesA").innerText = votesA;
-        document.getElementById("votesB").innerText = votesB;
-        document.getElementById("total").innerText =
-            votesA + votesB;
-
-        document.getElementById("message").innerText =
-            "Your vote has been recorded!";
+// CANDIDATES
+const positions = [
+    {
+        name: "President",
+        candidates: [
+            {
+                name: "Candidate A",
+                image: "https://i.pravatar.cc/150?img=12"
+            },
+            {
+                name: "Candidate B",
+                image: "https://i.pravatar.cc/150?img=13"
+            }
+        ]
+    },
+    {
+        name: "Vice President",
+        candidates: [
+            {
+                name: "Candidate C",
+                image: "https://i.pravatar.cc/150?img=14"
+            },
+            {
+                name: "Candidate D",
+                image: "https://i.pravatar.cc/150?img=15"
+            }
+        ]
+    },
+    {
+        name: "Secretary",
+        candidates: [
+            {
+                name: "Candidate E",
+                image: "https://i.pravatar.cc/150?img=16"
+            },
+            {
+                name: "Candidate F",
+                image: "https://i.pravatar.cc/150?img=17"
+            }
+        ]
+    },
+    {
+        name: "Treasurer",
+        candidates: [
+            {
+                name: "Candidate G",
+                image: "https://i.pravatar.cc/150?img=18"
+            },
+            {
+                name: "Candidate H",
+                image: "https://i.pravatar.cc/150?img=19"
+            }
+        ]
     }
+];
+
+// VOTE STORAGE
+let votes = JSON.parse(
+    localStorage.getItem("schoolVotes") ||
+    "{}"
+);
+
+let ballots = JSON.parse(
+    localStorage.getItem("schoolBallots") ||
+    "{}"
+);
+
+// INITIALIZE RESULTS
+positions.forEach(position => {
+    if (!votes[position.name]) {
+        votes[position.name] = {};
+    }
+
+    position.candidates.forEach(candidate => {
+        if (votes[position.name][candidate.name] === undefined) {
+            votes[position.name][candidate.name] = 0;
+        }
+    });
+});
+
+// SAVE DATA
+function saveData() {
+    localStorage.setItem(
+        "schoolVotes", JSON.stringify(votes)
+    );
+
+    localStorage.setItem(
+        "schoolBallots", JSON.stringify(ballots)
+    );
+}
+
+// PAGE NAVIGATION
+function hidePages() {
+    document.querySelectorAll(".container")
+    .forEach(page => page.classList.add("hidden"));
+}
+
+function showLogin() {
+    hidePages();
+    loginPage.classList.remove("hidden");
+}
+
+function showSignup() {
+    hidePages();
+    signupPage.classList.remove("hidden");
+}
+
+function showVoting() {
+    hidePages();
+    votingPage.classList.remove("hidden");
+}
+
+// SIGN UP
+signupForm.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const name = fullName.value.trim();
+    const username = newUsername.value.trim();
+    const password = newPassword.value;
+
+    if (password !== confirmPassword.value) {
+        signupMessage.textContent =
+            "Passwords do not match!";
+        return;
+    }
+
+    if (users.some(user => user.username === username)) {
+        signupMessage.textContent =
+            "Username already exists!";
+        return;
+    }
+
+    users.push({
+        name,
+        username,
+        password
+    });
+
+    localStorage.setItem(
+        "users", JSON.stringify(users)
+    );
+
+    signupMessage.textContent =
+        "Account created! You can now log in.";
+
+    signupForm.reset();
+});
+
+// LOGIN
+loginForm.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const username = loginUsername.value.trim();
+    const password = loginPassword.value;
+
+    const user = users.find(user =>
+        user.username === username &&
+        user.password === password
+    );
+
+    if (!user) {
+        loginMessage.textContent =
+            "Incorrect username or password!";
+        return;
+    }
+
+    currentUser = user;
+
+    welcome.textContent =
+        "Hello, " + user.name + "!";
+
+    showVoting();
+    renderPositions();
+    updateDashboard();
+});
+
+// DISPLAY CANDIDATES
+function renderPositions() {
+
+    const container = document.getElementById("positions");
+
+    container.innerHTML = "";
+
+    positions.forEach(position => {
+
+        let html = `
+            <div class="position">
+            <h2>${position.name}</h2>
+            <div class="candidate-grid">
+        `;
+
+        position.candidates.forEach(candidate => {
+
+            const alreadyVoted =
+                ballots[currentUser.username]?.[position.name];
+
+            html += `
+                <div class="candidate">
+
+                <img src="${candidate.image}"
+                alt="Candidate photo">
+
+                <h3>${candidate.name}</h3>
+
+                <p>Position: ${position.name}</p>
+
+                <button
+                onclick="castVote('${position.name}','${candidate.name}')"
+                ${alreadyVoted ? "disabled" : ""}>
+                ${alreadyVoted ? "Voted" : "Vote"}
+                </button>
+
+                </div>
+            `;
+        });
+
+        html += `</div></div>`;
+
+        container.innerHTML += html;
+    });
+}
+
+// CAST VOTE
+function castVote(position, candidate) {
+
+    if (!ballots[currentUser.username]) {
+        ballots[currentUser.username] = {};
+    }
+
+    if (ballots[currentUser.username][position]) {
+        voteMessage.textContent =
+            "You already voted for this position!";
+        return;
+    }
+
+    votes[position][candidate]++;
+
+    ballots[currentUser.username][position] = candidate;
+
+    saveData();
+
+    voteMessage.textContent =
+        "Your vote has been recorded!";
+
+    renderPositions();
+    updateDashboard();
+}
+
+// UPDATE DASHBOARD
+function updateDashboard() {
+
+    let total = 0;
+
+    Object.values(votes).forEach(position => {
+        Object.values(position).forEach(count => {
+            total += count;
+        });
+    });
+
+    document.getElementById("totalVotes").textContent =
+        total;
+
+    const completed = Object.keys(
+        ballots[currentUser.username] || {}
+    ).length;
+
+    document.getElementById("completedVotes").textContent =
+        completed + "/4";
+}
+
+// RESULTS
+function showResults() {
+
+    hidePages();
+    resultsPage.classList.remove("hidden");
+
+    let html = "";
+
+    positions.forEach(position => {
+
+        html += `<h2>${position.name}</h2>`;
+
+        position.candidates.forEach(candidate => {
+
+            const count =
+                votes[position.name][candidate.name];
+
+            const total = Object.values(
+                votes[position.name]
+            ).reduce((a,b) => a+b, 0);
+
+            const percentage = total
+                ? (count / total) * 100
+                : 0;
+
+            html += `
+                <div class="result-item">
+                    <strong>${candidate.name}</strong>
+                    <p>${count} votes (${percentage.toFixed(1)}%)</p>
+
+                    <div class="bar">
+                        <div class="bar-fill"
+                        style="width:${percentage}%">
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+    });
+
+    document.getElementById("resultsContent").innerHTML =
+        html;
+}
+
+// LOGOUT
+function logout() {
+    currentUser = null;
+    loginForm.reset();
+    loginMessage.textContent = "";
+    showLogin();
+}
+
 </script>
 
 </body>
