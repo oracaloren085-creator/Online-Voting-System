@@ -1,0 +1,146 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Voting System</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eaf0f8;
+            margin: 0;
+            padding: 20px;
+        }
+
+        header {
+            background: #173b70;
+            color: white;
+            text-align: center;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 25px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px #ccc;
+        }
+
+        h2 {
+            color: #173b70;
+            text-align: center;
+        }
+
+        .candidate {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        button {
+            background: #1769aa;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #0d4778;
+        }
+
+        #results {
+            background: #edf4ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 25px;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>ONLINE VOTING SYSTEM</h1>
+    <p>Welcome to Our Voting Platform</p>
+</header>
+
+<div class="container">
+
+    <h2>Select Your Candidate</h2>
+
+    <div class="candidate">
+        <h3>Candidate A</h3>
+        <p>Position: President</p>
+        <button onclick="vote('A')">Vote for A</button>
+    </div>
+
+    <div class="candidate">
+        <h3>Candidate B</h3>
+        <p>Position: President</p>
+        <button onclick="vote('B')">Vote for B</button>
+    </div>
+
+    <div id="results">
+        <h2>Voting Results</h2>
+        <p>Candidate A: <span id="votesA">0</span> votes</p>
+        <p>Candidate B: <span id="votesB">0</span> votes</p>
+        <h3>Total Votes: <span id="total">0</span></h3>
+    </div>
+
+    <p id="message"></p>
+
+</div>
+
+<footer>
+    <p>Online Voting System | School Project</p>
+</footer>
+
+<script>
+    let votesA = 0;
+    let votesB = 0;
+    let hasVoted = false;
+
+    function vote(candidate) {
+
+        if (hasVoted) {
+            document.getElementById("message").innerText =
+                "You have already voted!";
+            return;
+        }
+
+        if (candidate === "A") {
+            votesA++;
+        } else {
+            votesB++;
+        }
+
+        hasVoted = true;
+
+        document.getElementById("votesA").innerText = votesA;
+        document.getElementById("votesB").innerText = votesB;
+        document.getElementById("total").innerText =
+            votesA + votesB;
+
+        document.getElementById("message").innerText =
+            "Your vote has been recorded!";
+    }
+</script>
+
+</body>
+</html>
